@@ -53,8 +53,8 @@ const result = redact(
 
 ## Related
 
-- `wax-verifiable-credential-patterns` is still private. It is a commitment sketch, not this omission.
-- `wax-client-side-zk-attestation-interface` is still private. Its own note is `proof: false`.
+- [wax-verifiable-credential-patterns](https://github.com/pixel-journey/wax-verifiable-credential-patterns) — salted hashes. `signature` is always `not-checked`. Not this omission, and not a W3C credential.
+- [wax-client-side-zk-attestation-interface](https://github.com/pixel-journey/wax-client-side-zk-attestation-interface) — `proof` is `false`. A matching hash is not zero knowledge.
 
 ## License
 

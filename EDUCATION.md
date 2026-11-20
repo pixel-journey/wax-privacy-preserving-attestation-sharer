@@ -4,7 +4,7 @@
 
 1. **Omission is not encryption.** Dropping `secret` from a JSON object leaves every other field readable.
 2. **Omission is not zero knowledge.** A verifier who never received a field learned nothing about it *from this share*, but that is not a ZK proof system.
-3. **Omission is not selective disclosure.** Selective disclosure usually means a commitment plus a reveal. The credential-pattern lab that sketches that is still private. Here we only copy a subset of plaintext fields.
+3. **Omission is not selective disclosure.** Selective disclosure here means a salted hash per claim, which is [wax-verifiable-credential-patterns](https://github.com/pixel-journey/wax-verifiable-credential-patterns). That lab still says `signature: "not-checked"`. This file only copies a subset of plaintext fields. A matching hash is not zero knowledge: [wax-client-side-zk-attestation-interface](https://github.com/pixel-journey/wax-client-side-zk-attestation-interface) returns `proof: false`.
 4. **UI hide ≠ safe share.** `previewShare` and `sensitiveStillPresent` exist so product copy can warn when a sensitive key is still in `kept`.
 
 ## Worked examples
@@ -47,6 +47,6 @@ Never put a wallet private key into a share payload. This demo’s `private_key`
 
 | Repo | Relationship |
 |------|----------------|
-| credential-pattern lab (still private) | A sketch of commitments. Not this file, and not a W3C credential. |
+| [wax-verifiable-credential-patterns](https://github.com/pixel-journey/wax-verifiable-credential-patterns) | Salted hashes. Signature is not checked. Not this file, and not a W3C credential. |
 | `wax-client-side-zk-attestation-interface` | Explicit `proof: false` non-claim |
 | `wax-private-attestation-and-encrypted-vault` | Different privacy sketch — read its own verification log |
