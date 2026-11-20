@@ -48,5 +48,5 @@ Never put a wallet private key into a share payload. This demo’s `private_key`
 | Repo | Relationship |
 |------|----------------|
 | [wax-verifiable-credential-patterns](https://github.com/pixel-journey/wax-verifiable-credential-patterns) | Salted hashes. Signature is not checked. Not this file, and not a W3C credential. |
-| `wax-client-side-zk-attestation-interface` | Explicit `proof: false` non-claim |
-| `wax-private-attestation-and-encrypted-vault` | Different privacy sketch — read its own verification log |
+| [wax-client-side-zk-attestation-interface](https://github.com/pixel-journey/wax-client-side-zk-attestation-interface) | `proof` is `false`. A matching hash is not zero knowledge. |
+| `wax-private-attestation-and-encrypted-vault` | Still private. Not linked. |
