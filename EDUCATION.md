@@ -4,7 +4,7 @@
 
 1. **Omission is not encryption.** Dropping `secret` from a JSON object leaves every other field readable.
 2. **Omission is not zero knowledge.** A verifier who never received a field learned nothing about it *from this share*, but that is not a ZK proof system.
-3. **Omission is not selective disclosure.** Selective disclosure usually means commitments + reveal-with-salt (see `wax-verifiable-credential-patterns`). Here we only copy a subset of plaintext fields.
+3. **Omission is not selective disclosure.** Selective disclosure usually means a commitment plus a reveal. The credential-pattern lab that sketches that is still private. Here we only copy a subset of plaintext fields.
 4. **UI hide ≠ safe share.** `previewShare` and `sensitiveStillPresent` exist so product copy can warn when a sensitive key is still in `kept`.
 
 ## Worked examples
@@ -47,6 +47,6 @@ Never put a wallet private key into a share payload. This demo’s `private_key`
 
 | Repo | Relationship |
 |------|----------------|
-| `wax-verifiable-credential-patterns` | Commitments + reveal (still not full W3C VC / BBS+) |
+| credential-pattern lab (still private) | A sketch of commitments. Not this file, and not a W3C credential. |
 | `wax-client-side-zk-attestation-interface` | Explicit `proof: false` non-claim |
 | `wax-private-attestation-and-encrypted-vault` | Different privacy sketch — read its own verification log |

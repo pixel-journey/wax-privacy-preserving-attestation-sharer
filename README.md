@@ -2,7 +2,7 @@
 
 > **Trust label:** `educational-reference`  
 > **Status:** Full-thrust education pass (2026-11-02)  
-> **Catalog:** [wax-ecosystem-blueprint-catalog](https://github.com/pixel-journey/wax-ecosystem-blueprint-catalog)
+> **Catalog:** `wax-ecosystem-blueprint-catalog` (private index; not this public course)
 
 **One-sentence goal:** Teach **field omission** before share — with pure, unit-tested helpers — without pretending the result is encrypted or zero-knowledge.
 
@@ -53,8 +53,8 @@ const result = redact(
 
 ## Related
 
-- [wax-verifiable-credential-patterns](https://github.com/pixel-journey/wax-verifiable-credential-patterns) — salted commitments
-- [wax-client-side-zk-attestation-interface](https://github.com/pixel-journey/wax-client-side-zk-attestation-interface) — explicit `proof: false`
+- `wax-verifiable-credential-patterns` is still private. It is a commitment sketch, not this omission.
+- `wax-client-side-zk-attestation-interface` is still private. Its own note is `proof: false`.
 
 ## License
 
