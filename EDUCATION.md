@@ -1,52 +1,78 @@
 # Education — privacy by omission
 
-## What this repo teaches
+> **Rung:** `npm test` passes. Dropping a field leaves every other field readable. Nothing is encrypted, hashed, or proven.  
+> **The test is the rule.** Selective disclosure with salts: [wax-verifiable-credential-patterns](https://github.com/pixel-journey/wax-verifiable-credential-patterns). Non-proof: [wax-client-side-zk-attestation-interface](https://github.com/pixel-journey/wax-client-side-zk-attestation-interface).
 
-1. **Omission is not encryption.** Dropping `secret` from a JSON object leaves every other field readable.
-2. **Omission is not zero knowledge.** A verifier who never received a field learned nothing about it *from this share*, but that is not a ZK proof system.
-3. **Omission is not selective disclosure.** Selective disclosure here means a salted hash per claim, which is [wax-verifiable-credential-patterns](https://github.com/pixel-journey/wax-verifiable-credential-patterns). That lab still says `signature: "not-checked"`. This file only copies a subset of plaintext fields. A matching hash is not zero knowledge: [wax-client-side-zk-attestation-interface](https://github.com/pixel-journey/wax-client-side-zk-attestation-interface) returns `proof: false`.
-4. **UI hide ≠ safe share.** `previewShare` and `sensitiveStillPresent` exist so product copy can warn when a sensitive key is still in `kept`.
+## Learning outcomes
 
-## Worked examples
+| Level | After this file |
+| --- | --- |
+| Beginner | Drop `secret` and see `email` still readable |
+| Intermediate | Use `sensitiveStillPresent` and empty/duplicate refusals |
+| Masterclass | Separate omission from encryption, ZK, and salted disclosure |
 
-### Profile
+---
 
-```ts
-redact(
-  { name: "Oak", secret: "hide-me", email: "oak@example.invalid" },
-  ["secret"],
-  { sensitiveKeys: ["secret", "email"] }
-);
-// kept still has email → sensitiveStillPresent: ["email"]
+## Beginner — one scene
+
+| Call | Locked result |
+| --- | --- |
+| drop `["secret"]` on SAMPLE_PROFILE | kept has `name`, `note`, `email`; dropped `["secret"]` |
+| same + sensitiveKeys `["secret", "email"]` | `sensitiveStillPresent` is `["email"]` |
+| drop `[]` | not ok |
+| drop `["secret", "secret"]` | not ok |
+| drop `["Not Valid"]` | not ok |
+| drop attestation `private_key` only | `sensitiveCleared` true for that key |
+
+```bash
+npm test
 ```
 
-### Attestation-shaped row
+---
 
-```ts
-redact(
-  { subject: "alice", claim: "completed_quest_12", private_key: "…" },
-  ["private_key"]
-);
-// private_key gone; claim stays plaintext
-```
+## Intermediate — rules
 
-## Antelope / WAX notes
+| Rule | Detail |
+| --- | --- |
+| Drop list length | 1 .. 10 |
+| Field names | `^[a-z][a-z0-9_]{0,31}$` |
+| Duplicates | refused |
+| `previewShare` | warns when sensitive keys remain in `kept` |
 
-Field names in this lab are lowercase identifiers (`a-z`, digits, `_`). That is a **teaching constraint**, not an on-chain schema. Real AtomicAssets attributes and contract tables use their own naming rules — re-read those ABIs.
+UI hide ≠ safe share. `previewShare` exists so product copy can warn before export.
 
-Never put a wallet private key into a share payload. This demo’s `private_key` field is a deliberately toxic label so the warning path is obvious.
+### Attack → test
 
-## Best practice
+| Attack | Lab behavior |
+| --- | --- |
+| Call redacted JSON encrypted | refused in docs |
+| Leave email while dropping secret | `sensitiveStillPresent: ["email"]` |
+| Empty drop list | refused |
+| Uppercase field `Secret` | not a field name |
 
-**Do** list sensitive keys explicitly in product policy.  
-**Do** show the user the exact keys that will be exported.  
-**Do not** call a redacted JSON blob “encrypted” or “ZK.”  
-**Do not** assume logs, analytics, or support tickets respect the same drop list.
+---
 
-## Related
+## Masterclass
 
-| Repo | Relationship |
-|------|----------------|
-| [wax-verifiable-credential-patterns](https://github.com/pixel-journey/wax-verifiable-credential-patterns) | Salted hashes. Signature is not checked. Not this file, and not a W3C credential. |
-| [wax-client-side-zk-attestation-interface](https://github.com/pixel-journey/wax-client-side-zk-attestation-interface) | `proof` is `false`. A matching hash is not zero knowledge. |
-| `wax-private-attestation-and-encrypted-vault` | Still private. Not linked. |
+| Claim | Reality here |
+| --- | --- |
+| Encryption | No |
+| Zero knowledge | No |
+| Selective disclosure | No — that is salted hashes in the VC lab |
+| Signature check | No |
+
+Field names are teaching identifiers, not an AtomicAssets schema. Never put a wallet private key into a share payload; the demo `private_key` label is deliberately toxic.
+
+### Exercises
+
+1. After dropping only `secret`, is `email` gone? (**No**.)  
+2. Empty drop list ok? (**No**.)  
+3. Is this a ZK proof? (**No**.)
+
+---
+
+## What this course will not teach
+
+- Encryption or hashing of fields
+- Issuer signatures
+- That logs and analytics respect the drop list
